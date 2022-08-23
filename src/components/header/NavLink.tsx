@@ -5,10 +5,11 @@ import { ActiveLink } from "../ActiveLink";
 interface NavLinkProps extends ChakraLinkProps {
     children: string;
     href: string;
+    shouldMatchExactHref?: boolean;
 }
 
-export default function NavLink({ children, href, ...rest}: NavLinkProps) {
-    return (<ActiveLink href={href} passHref>
+export default function NavLink({ children,shouldMatchExactHref = false, href, ...rest}: NavLinkProps) {
+    return (<ActiveLink shouldMatchExactHref href={href} passHref>
                     <ChakraLink 
                         fontWeight={'regular'}
                         px={3}

@@ -19,7 +19,7 @@ export function Header () {
                 justifyContent= 'space-between'
             >
                 <Image src="/images/logo_dr1n.svg" alt='logo dr1n'/>
-                <Flex flex={0.7}>                
+                <Flex flex={0.65}>                
                     <HeaderNav/>
                     <SocialMediaNav/>
                 </Flex>
