@@ -9,7 +9,7 @@ interface NavLinkProps extends ChakraLinkProps {
 }
 
 export default function NavLink({ children,shouldMatchExactHref = false, href, ...rest}: NavLinkProps) {
-    return (<ActiveLink shouldMatchExactHref href={href} passHref>
+    return (<ActiveLink shouldMatchExactHref={shouldMatchExactHref} href={href} passHref>
                     <ChakraLink 
                         fontWeight={'regular'}
                         px={3}

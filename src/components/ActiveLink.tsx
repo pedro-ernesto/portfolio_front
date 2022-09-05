@@ -17,7 +17,7 @@ export function ActiveLink({children, shouldMatchExactHref = false, ...rest}: Ac
         isActive = true;
     }
 
-    if (!shouldMatchExactHref && (asPath.startsWith(String(rest.href)) || asPath === String(rest.as))) {
+    if (!shouldMatchExactHref && (asPath.startsWith(String(rest.href)) || asPath === rest.as)) {
         isActive = true;
     }
 
@@ -27,7 +27,7 @@ export function ActiveLink({children, shouldMatchExactHref = false, ...rest}: Ac
                 _after={{
                     content: '""',
                     background: 'yellow',
-                    h: '3px',
+                    h: '0.1875rem',
                     w: '100%',
                     bottom: '1px',
                     left: 0,
