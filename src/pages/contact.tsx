@@ -11,7 +11,7 @@ export default function Contact() {
 
       <VStack mt={'4rem'} alignSelf={'center'}>
         <Text  fontSize={'72'} fontWeight='black' color="white"> Contact Me</Text>
-        <Text fontSize={'24'} fontWeight='light' color="white">I'd love to hear from you! Here's how to reach me: </Text>
+        <Text fontSize={'24'} fontWeight='light' color="white">I&apos;d love to hear from you! Here&apos;s how to reach me: </Text>
       
       </VStack>
 
