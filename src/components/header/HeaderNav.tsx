@@ -9,9 +9,8 @@ export function HeaderNav() {
             <NavLink href='/work' >Work</NavLink>
             <NavLink href='/contact'>Contact</NavLink>
             <NavLink
-                href='https://drive.google.com/file/d/1srTpqKszBoKz9MOf6HTi5hW5EHAMVDJH/view?usp=sharing' 
+                href='https://drive.google.com/file/d/105-xNztPvW-kdjKE20w3LWr3XbShJRM4/view?usp=sharing' 
                 isExternal
-                
             >
                 Resume</NavLink>
         </HStack>

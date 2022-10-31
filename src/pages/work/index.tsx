@@ -1,10 +1,11 @@
 import { GetStaticProps } from "next"
 import Prismic from '@prismicio/client'
 import { RichText } from 'prismic-dom'
+import { useEffect, useState } from "react";
 
 import { getPrismicClient } from "../../services/prismic"
 import Head from "next/head"
-import { Box, Link as ChakraLink, Text } from "@chakra-ui/react"
+import { Box, Image, Link as ChakraLink, Text } from "@chakra-ui/react"
 import Link from "next/link"
 import { Header } from "../../components/header"
 import { useRouter } from "next/router"
@@ -14,6 +15,7 @@ type Post = {
     title: string;
     excerpt: string;
     updatedAt: string;
+    image: string;
     tags: string[];
 }
 
@@ -22,17 +24,29 @@ interface PostsProps{
 }
 
 export default function Work({posts}: PostsProps) {
-
+    const [width, setWidth] = useState<number>(null);
+    function handleWindowSizeChange() {
+        setWidth(window.innerWidth);
+    }
+    useEffect(() => {
+        handleWindowSizeChange()
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
+    }, []);
+    
+    const isMobile = width <= 850;
     return (
         <>
         <Head>
             <title> Work | dr1n </title>
         </Head>
 
-        <Header/>
+        <Header logo={!isMobile}/>
 
         <Box maxW='1120px' mx='auto' px='2rem'>
-            <Box maxW='720px' marginTop='4.5rem' marginBottom='auto'>
+            <Box maxW='720px' marginTop='4.5rem' marginBottom='2rem'>
                 { posts.map(post => (
                     <Link key={post.slug} href={`/work/${post.slug}`}>
                         <ChakraLink 
@@ -60,9 +74,11 @@ export default function Work({posts}: PostsProps) {
                                     marginTop={'1rem'}
                                     lineHeight='2rem'
                                     
-                                    >
+                                >
                                         {post.title}</Text>
 
+                                <Image objectFit='contain' boxSize='400px' src={post.image}
+                                />
                                 <Text 
                                     color={'gray.300'} marginTop='0.5rem' lineHeight='1.625rem'
                                     marginBottom={'0.8rem'}
@@ -110,6 +126,7 @@ export const getStaticProps: GetStaticProps = async () => {
         return {
             slug: post.uid,
             title: RichText.asText(post.data.title),
+            image: post.data.headerimage.url,
             excerpt: post.data.content.find(content=> content.type === 'paragraph')?.text ?? '',
             updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
                 day: '2-digit',

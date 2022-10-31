@@ -2,7 +2,11 @@ import { Box, Image, Flex} from "@chakra-ui/react";
 import { HeaderNav } from "./HeaderNav";
 import SocialMediaNav from "./SocialMediaNav";
 
-export function Header () {
+interface IHeaderProps {
+    logo: boolean
+}
+
+export function Header (props: IHeaderProps) {
     return (
         <Box
             as="header"
@@ -17,11 +21,12 @@ export function Header () {
                 px={8}
                 alignItems='center'
                 justifyContent= 'space-between'
-            >
-                <Image src="/images/logo_dr1n.svg" alt='logo dr1n'/>
+            >   
+                {props.logo &&<Image src="/images/logo_dr1n.svg" alt='logo dr1n'/>}
                 <Flex flex={0.65}>                
                     <HeaderNav/>
-                    <SocialMediaNav/>
+                    {props.logo &&<SocialMediaNav/>}
+                    
                 </Flex>
 
             </Flex>

@@ -1,7 +1,8 @@
-import { AspectRatio, Box, Text } from "@chakra-ui/react";
+import { AspectRatio, Box, Image, Text } from "@chakra-ui/react";
 import { GetServerSideProps } from "next"
 import Head from "next/head";
 import { RichText } from "prismic-dom";
+import { useEffect, useState } from "react";
 import { Header } from "../../components/header";
 import { getPrismicClient } from '../../services/prismic'
 
@@ -9,6 +10,7 @@ interface PostProps {
     post: {
         slug:string;
         title: string;
+        image: string;
         content: string;
         updatedAt: string;
         videoUrl: string;
@@ -17,6 +19,20 @@ interface PostProps {
 }
 
 export default function Post({post}: PostProps) {
+    const [width, setWidth] = useState<number>(null);
+
+    function handleWindowSizeChange() {
+        setWidth(window.innerWidth);
+    }
+    useEffect(() => {
+        handleWindowSizeChange()
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
+    }, []);
+    
+    const isMobile = width <= 850;
     
     return (
         <>
@@ -24,7 +40,7 @@ export default function Post({post}: PostProps) {
                 <title>{`${post.title} | dr1n `}</title>
             </Head>
 
-            <Header/>
+            <Header logo={!isMobile}/>
 
             <Box maxWidth={'1120px'} marginX='auto' px={'2rem'} >
                 <Box maxWidth={'720px'} marginTop='3rem' marginBottom={'auto'}>
@@ -55,6 +71,8 @@ export default function Post({post}: PostProps) {
                         marginTop='1.5rem'
                     >
                         {post.updatedAt}</Text>
+                        <Image objectFit='contain' boxSize='500px' src={post.image}
+                                />
                     
                     <Box 
                         dangerouslySetInnerHTML={{__html: post.content}}
@@ -78,7 +96,7 @@ export default function Post({post}: PostProps) {
                 </Box>
 
                 {post.videoUrl && 
-                    (<AspectRatio marginTop={'1rem'} maxW={'720px'} ratio={1}>
+                    (<AspectRatio marginTop={'1.5rem'} maxW={'720px'} ratio={16/9} marginBottom={'2rem'}>
                         <iframe 
                             title='post-video'
                             src={post.videoUrl}
@@ -111,6 +129,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
     const post = {
         slug,
         title: RichText.asText(response.data.title),
+        image: response.data.headerimage.url,
         content: RichText.asHtml(response.data.content),
         videoUrl:( response.data.video.embed_url).replace('watch?v=', 'embed/'),
         tags: response.tags,
